@@ -27,8 +27,6 @@ import { Avatar } from "./chat";
 
 import Locale, { AllLangs, changeLang, getLang } from "../locales";
 import { getCurrentVersion, getEmojiUrl } from "../utils";
-import Link from "next/link";
-import { UPDATE_URL } from "../constant";
 import { SearchService, usePromptStore } from "../store/prompt";
 import { requestUsage } from "../requests";
 import { ErrorBoundary } from "./error";
@@ -206,31 +204,6 @@ export function Settings(props: { closeSettings: () => void }) {
             </Popover>
           </SettingItem>
 
-          <SettingItem
-            title={Locale.Settings.Update.Version(currentId)}
-            subTitle={
-              checkingUpdate
-                ? Locale.Settings.Update.IsChecking
-                : hasNewVersion
-                ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
-                : Locale.Settings.Update.IsLatest
-            }
-          >
-            {checkingUpdate ? (
-              <div />
-            ) : hasNewVersion ? (
-              <Link href={UPDATE_URL} target="_blank" className="link">
-                {Locale.Settings.Update.GoToUpdate}
-              </Link>
-            ) : (
-              <IconButton
-                icon={<ResetIcon></ResetIcon>}
-                text={Locale.Settings.Update.CheckUpdate}
-                onClick={() => checkUpdate(true)}
-              />
-            )}
-          </SettingItem>
-
           <SettingItem title={Locale.Settings.SendKey}>
             <select
               value={config.submitKey}
@@ -329,6 +302,7 @@ export function Settings(props: { closeSettings: () => void }) {
           </SettingItem>
         </List>
         <List>
+          {/** 是否禁用自定义提示词补全 */}
           <SettingItem
             title={Locale.Settings.Prompt.Disable.Title}
             subTitle={Locale.Settings.Prompt.Disable.SubTitle}
@@ -345,6 +319,7 @@ export function Settings(props: { closeSettings: () => void }) {
             ></input>
           </SettingItem>
 
+          {/** 提示词自定义 */}
           <SettingItem
             title={Locale.Settings.Prompt.List}
             subTitle={Locale.Settings.Prompt.ListCount(

@@ -8,7 +8,6 @@ import { IconButton } from "./button";
 import styles from "./home.module.scss";
 
 import SettingsIcon from "../icons/settings.svg";
-import GithubIcon from "../icons/github.svg";
 import ChatGptIcon from "../icons/chatgpt.svg";
 
 import BotIcon from "../icons/bot.svg";
@@ -22,7 +21,6 @@ import Locale from "../locales";
 import { Chat } from "./chat";
 
 import dynamic from "next/dynamic";
-import { REPO_URL } from "../constant";
 import { ErrorBoundary } from "./error";
 
 export function Loading(props: { noLogo?: boolean }) {
@@ -115,13 +113,14 @@ function _Home() {
           : styles.container
       }`}
     >
+      {/** 左侧区域 */}
       <div
         className={styles.sidebar + ` ${showSideBar && styles["sidebar-show"]}`}
       >
         <div className={styles["sidebar-header"]}>
-          <div className={styles["sidebar-title"]}>ChatGPT Next</div>
+          <div className={styles["sidebar-title"]}>Awesome ChatGPT</div>
           <div className={styles["sidebar-sub-title"]}>
-            Build your own AI assistant.
+            开启你的人工智能之旅
           </div>
           <div className={styles["sidebar-logo"]}>
             <ChatGptIcon />
@@ -156,11 +155,6 @@ function _Home() {
                 shadow
               />
             </div>
-            <div className={styles["sidebar-action"]}>
-              <a href={REPO_URL} target="_blank">
-                <IconButton icon={<GithubIcon />} shadow />
-              </a>
-            </div>
           </div>
           <div>
             <IconButton
@@ -176,8 +170,10 @@ function _Home() {
         </div>
       </div>
 
+      {/** 聊天内容区 */}
       <div className={styles["window-content"]}>
         {openSettings ? (
+          // 显示设置面板
           <Settings
             closeSettings={() => {
               setOpenSettings(false);
@@ -185,6 +181,7 @@ function _Home() {
             }}
           />
         ) : (
+          // 显示对话
           <Chat
             key="chat"
             showSideBar={() => setShowSideBar(true)}

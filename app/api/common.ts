@@ -6,12 +6,14 @@ const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
 
 export async function requestOpenai(req: NextRequest) {
-  const apiKey = req.headers.get("token");
-  const openaiPath = req.headers.get("path");
+  // const apiKey = req.headers.get("token");
+  const apiKey = process.env.OPENAI_API_KEY;
+  // const openaiPath = req.headers.get("path");
 
-  console.log("[Proxy] ", openaiPath);
+  // const openaiUrl = `${PROTOCOL}://${BASE_URL}/${openaiPath}`;
+  const openaiUrl = "https://api.openai.com/v1/chat/completions";
 
-  return fetch(`${PROTOCOL}://${BASE_URL}/${openaiPath}`, {
+  return fetch(openaiUrl, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,

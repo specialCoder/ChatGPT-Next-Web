@@ -13,6 +13,8 @@ async function createStream(req: NextRequest) {
 
   const res = await requestOpenai(req);
 
+  console.log("openai res-->", res);
+
   const contentType = res.headers.get("Content-Type") ?? "";
   if (!contentType.includes("stream")) {
     const content = await (
@@ -61,6 +63,8 @@ export async function POST(req: NextRequest) {
   const token = req.headers.get("x-access-token") || "";
   const redisHttpUrl = `${PROTOCOL}://${BASE_URL}/api/redis/${token}`;
 
+  console.log("chat-stream-->", redisHttpUrl, token);
+
   // request redis
   try {
     if (!token.trim()) {
@@ -69,7 +73,8 @@ export async function POST(req: NextRequest) {
 
     const redisResult = await fetch(redisHttpUrl);
     const { code, data } = await redisResult.json();
-    if (code === 0 || Number(data) > 0) {
+
+    if (code === 0 || Number(data) <= 0) {
       return new Response(errorInfo);
     }
   } catch (error) {
@@ -80,7 +85,7 @@ export async function POST(req: NextRequest) {
   try {
     const stream = await createStream(req);
     // redis data--
-    await redisInstance.decr(token);
+    // await redisInstance.decr(token);
     return new Response(stream);
   } catch (error) {
     console.error("[Chat Stream]", error);

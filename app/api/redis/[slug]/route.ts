@@ -36,6 +36,7 @@ export async function GET(
       data: value,
     });
   } catch (error) {
+    // console.log('error====>',error);
     return NextResponse.json({
       code: 0,
       message: String(error),

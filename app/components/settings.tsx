@@ -97,7 +97,7 @@ export function Settings(props: { closeSettings: () => void }) {
     });
   }
 
-  const [rest, setRest] = useState<number>();
+  const [rest, setRest] = useState<string>("-");
   const [loadingUsage, setLoadingUsage] = useState(false);
   function checkUsage() {
     setLoadingUsage(true);
@@ -106,7 +106,7 @@ export function Settings(props: { closeSettings: () => void }) {
         try {
           const { code, data } = await res.json();
           if (code === 1) {
-            setRest(data);
+            setRest(String(data));
           }
         } catch (error) {
           console.log("setRest error:", error);
@@ -400,7 +400,7 @@ export function Settings(props: { closeSettings: () => void }) {
               showUsage
                 ? loadingUsage
                   ? Locale.Settings.Usage.IsChecking
-                  : Locale.Settings.Usage.SubTitle(rest || "-") // rest
+                  : Locale.Settings.Usage.SubTitle(rest) // rest
                 : Locale.Settings.Usage.NoAccess
             }
           >

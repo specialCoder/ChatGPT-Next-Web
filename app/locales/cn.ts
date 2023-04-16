@@ -112,7 +112,7 @@ const cn = {
     XAccessToken: {
       Title: "授权码",
       SubTitle: "通过有效的授权码来使用产品功能",
-      Placeholder: "Authorization Key",
+      Placeholder: "Authorization Code",
     },
     Usage: {
       Title: "余额查询",

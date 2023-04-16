@@ -109,6 +109,11 @@ const tw: LocaleType = {
       SubTitle: "使用自己的 Key 可規避授權訪問限制",
       Placeholder: "OpenAI API Key",
     },
+    XAccessToken: {
+      Title: "授权码",
+      SubTitle: "通过有效的授权码来使用产品功能",
+      Placeholder: "Authorization Code",
+    },
     Usage: {
       Title: "帳戶餘額",
       SubTitle(used: any, total: any) {

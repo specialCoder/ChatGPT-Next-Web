@@ -112,6 +112,11 @@ const es: LocaleType = {
       SubTitle: "Utiliza tu clave para ignorar el límite de código de acceso",
       Placeholder: "Clave de la API de OpenAI",
     },
+    XAccessToken: {
+      Title: "Authorization Code",
+      SubTitle: "Use authorization code to ignore access code limit",
+      Placeholder: "Authorization Code",
+    },
     Usage: {
       Title: "Saldo de la cuenta",
       SubTitle(used: any, total: any) {

@@ -368,6 +368,7 @@ export const useChatStore = create<ChatStore>()(
         get().summarizeSession();
       },
 
+      // -- start -- //
       async onUserInput(content) {
         const userMessage: Message = createMessage({
           role: "user",
@@ -433,6 +434,7 @@ export const useChatStore = create<ChatStore>()(
           modelConfig: get().config.modelConfig,
         });
       },
+      // -- end --//
 
       getMemoryPrompt() {
         const session = get().currentSession();

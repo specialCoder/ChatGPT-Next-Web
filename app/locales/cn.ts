@@ -106,8 +106,13 @@ const cn = {
     },
     Token: {
       Title: "API Key",
-      SubTitle: "使用自己的 Key 可绕过密码访问限制",
+      SubTitle: "使用自己的 Openai Key 可绕过密码访问限制",
       Placeholder: "OpenAI API Key",
+    },
+    XAccessToken: {
+      Title: "授权码",
+      SubTitle: "通过有效的授权码来使用产品功能",
+      Placeholder: "Authorization Key",
     },
     Usage: {
       Title: "余额查询",

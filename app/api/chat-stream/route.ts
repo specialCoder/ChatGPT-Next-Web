@@ -1,5 +1,6 @@
 import { createParser } from "eventsource-parser";
 import { NextRequest } from "next/server";
+import redisInstance from "@/app/database/redis";
 import { requestOpenai } from "../common";
 
 const DEFAULT_PROTOCOL = "https";
@@ -78,7 +79,8 @@ export async function POST(req: NextRequest) {
   // request openai
   try {
     const stream = await createStream(req);
-    // TODO:redis data--
+    // redis data--
+    await redisInstance.decr(token);
     return new Response(stream);
   } catch (error) {
     console.error("[Chat Stream]", error);

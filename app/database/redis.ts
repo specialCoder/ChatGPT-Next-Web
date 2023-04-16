@@ -1,10 +1,10 @@
 import { Redis } from "@upstash/redis";
-const REDIS_HOST = process.env.REDIS_HOST;
-const REDIS_TOKEN = process.env.REDIS_TOKEN;
+const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
 const instance = new Redis({
-  url: REDIS_HOST,
-  token: REDIS_TOKEN,
+  url: UPSTASH_REDIS_REST_URL,
+  token: UPSTASH_REDIS_REST_TOKEN,
 });
 
 export default instance;

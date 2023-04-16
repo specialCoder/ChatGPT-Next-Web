@@ -8,6 +8,7 @@ export async function POST(
 ) {
   const { slug } = params;
   const { value, options } = await req.json();
+
   try {
     const result = await redisInstance.set(slug, value, options);
     return NextResponse.json({
@@ -27,7 +28,6 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { slug: string } },
 ) {
-  console.log("redis get param===>", params);
   const { slug } = params;
   try {
     const value = await redisInstance.get(slug);

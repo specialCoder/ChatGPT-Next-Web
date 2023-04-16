@@ -353,7 +353,8 @@ export function Settings(props: { closeSettings: () => void }) {
             <></>
           )}
 
-          <SettingItem
+          {/** API Key */}
+          {/* <SettingItem
             title={Locale.Settings.Token.Title}
             subTitle={Locale.Settings.Token.SubTitle}
           >
@@ -363,6 +364,21 @@ export function Settings(props: { closeSettings: () => void }) {
               placeholder={Locale.Settings.Token.Placeholder}
               onChange={(e) => {
                 accessStore.updateToken(e.currentTarget.value);
+              }}
+            />
+          </SettingItem> */}
+
+          {/** 自定义 KEY */}
+          <SettingItem
+            title={Locale.Settings.XAccessToken.Title}
+            subTitle={Locale.Settings.XAccessToken.SubTitle}
+          >
+            <PasswordInput
+              value={accessStore.XAccessToken}
+              type="text"
+              placeholder={Locale.Settings.XAccessToken.Placeholder}
+              onChange={(e) => {
+                accessStore.updateXAccessToken(e.currentTarget.value);
               }}
             />
           </SettingItem>

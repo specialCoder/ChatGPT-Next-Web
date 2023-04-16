@@ -9,7 +9,7 @@ const makeRequestParam = (
   options?: {
     filterBot?: boolean;
     stream?: boolean;
-  }
+  },
 ): ChatRequest => {
   let sendMessages = messages.map((v) => ({
     role: v.role,
@@ -29,6 +29,7 @@ const makeRequestParam = (
   };
 };
 
+// set chat-stream request headers
 function getHeaders() {
   const accessStore = useAccessStore.getState();
   let headers: Record<string, string> = {};
@@ -37,8 +38,16 @@ function getHeaders() {
     headers["access-code"] = accessStore.accessCode;
   }
 
+  // openpi key
   if (accessStore.token && accessStore.token.length > 0) {
     headers["token"] = accessStore.token;
+  }
+
+  // custom key
+  if (accessStore.XAccessToken && accessStore.XAccessToken.length > 0) {
+    headers["x-access-token"] = accessStore.XAccessToken;
+    // 设置统一使用官方的 openai key
+    headers["token"] = process.env.OPENAI_API_KEY!;
   }
 
   return headers;
@@ -84,7 +93,7 @@ export async function requestUsage() {
 
   const [used, subs] = await Promise.all([
     requestOpenaiClient(
-      `dashboard/billing/usage?start_date=${startDate}&end_date=${endDate}`
+      `dashboard/billing/usage?start_date=${startDate}&end_date=${endDate}`,
     )(null, "GET"),
     requestOpenaiClient("dashboard/billing/subscription")(null, "GET"),
   ]);
@@ -124,7 +133,7 @@ export async function requestChatStream(
     onMessage: (message: string, done: boolean) => void;
     onError: (error: Error, statusCode?: number) => void;
     onController?: (controller: AbortController) => void;
-  }
+  },
 ) {
   const req = makeRequestParam(messages, {
     stream: true,
@@ -213,7 +222,7 @@ export const ControllerPool = {
   addController(
     sessionIndex: number,
     messageId: number,
-    controller: AbortController
+    controller: AbortController,
   ) {
     const key = this.key(sessionIndex, messageId);
     this.controllers[key] = controller;

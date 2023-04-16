@@ -407,7 +407,9 @@ export function Chat(props: {
   const onUserSubmit = () => {
     if (userInput.length <= 0) return;
     setIsLoading(true);
+
     chatStore.onUserInput(userInput).then(() => setIsLoading(false));
+
     setBeforeInput(userInput);
     setUserInput("");
     setPromptHints([]);

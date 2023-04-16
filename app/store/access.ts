@@ -5,9 +5,11 @@ import { queryMeta } from "../utils";
 export interface AccessControlStore {
   accessCode: string;
   token: string;
+  XAccessToken: string;
 
-  updateToken: (_: string) => void;
   updateCode: (_: string) => void;
+  updateToken: (_: string) => void;
+  updateXAccessToken: (_: string) => void;
   enabledAccessControl: () => boolean;
 }
 
@@ -18,6 +20,7 @@ export const useAccessStore = create<AccessControlStore>()(
     (set, get) => ({
       token: "",
       accessCode: "",
+      XAccessToken: "",
       enabledAccessControl() {
         return queryMeta("access") === "enabled";
       },
@@ -27,10 +30,13 @@ export const useAccessStore = create<AccessControlStore>()(
       updateToken(token: string) {
         set((state) => ({ token }));
       },
+      updateXAccessToken(token: string) {
+        set((state) => ({ XAccessToken: token }));
+      },
     }),
     {
       name: ACCESS_KEY,
       version: 1,
-    }
-  )
+    },
+  ),
 );

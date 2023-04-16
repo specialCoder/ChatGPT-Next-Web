@@ -383,6 +383,7 @@ export function Settings(props: { closeSettings: () => void }) {
             />
           </SettingItem>
 
+          {/** 余额查询 */}
           <SettingItem
             title={Locale.Settings.Usage.Title}
             subTitle={

@@ -116,8 +116,8 @@ const cn = {
     },
     Usage: {
       Title: "余额查询",
-      SubTitle(used: any, total: any) {
-        return `本月已使用 $${used}，订阅总额 $${total}`;
+      SubTitle(rest: string) {
+        return `可用调用次数：${rest} 次`;
       },
       IsChecking: "正在检查…",
       Check: "重新检查",

@@ -119,8 +119,8 @@ const es: LocaleType = {
     },
     Usage: {
       Title: "Saldo de la cuenta",
-      SubTitle(used: any, total: any) {
-        return `Usado $${used}, subscription $${total}`;
+      SubTitle(rest: string) {
+        return `rest: ${rest}`;
       },
       IsChecking: "Comprobando...",
       Check: "Comprobar de nuevo",

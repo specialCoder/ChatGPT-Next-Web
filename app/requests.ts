@@ -1,8 +1,15 @@
 import type { ChatRequest, ChatReponse } from "./api/openai/typing";
 import { Message, ModelConfig, useAccessStore, useChatStore } from "./store";
 import { showToast } from "./components/ui-lib";
+import { NextRequest, NextResponse } from "next/server";
 
 const TIME_OUT_MS = 30000;
+
+const DEFAULT_PROTOCOL = "https";
+// const DEFAULT_PROTOCOL = "http";
+const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
+const BASE_URL = process.env.BASE_URL ?? "aigcfree.vercel.app";
+// const BASE_URL = "127.0.0.1:3000";
 
 const makeRequestParam = (
   messages: Message[],
@@ -79,50 +86,36 @@ export async function requestChat(messages: Message[]) {
   }
 }
 
+// 剩余额度查询
 export async function requestUsage() {
-  const formatDate = (d: Date) =>
-    `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, "0")}-${d
-      .getDate()
-      .toString()
-      .padStart(2, "0")}`;
-  const ONE_DAY = 2 * 24 * 60 * 60 * 1000;
-  const now = new Date(Date.now() + ONE_DAY);
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const startDate = formatDate(startOfMonth);
-  const endDate = formatDate(now);
+  const errorInfo = JSON.stringify({
+    code: 0,
+    message: "no available key!",
+  });
 
-  const [used, subs] = await Promise.all([
-    requestOpenaiClient(
-      `dashboard/billing/usage?start_date=${startDate}&end_date=${endDate}`,
-    )(null, "GET"),
-    requestOpenaiClient("dashboard/billing/subscription")(null, "GET"),
-  ]);
+  const { XAccessToken = "" } = useAccessStore.getState();
+  const redisHttpUrl = `${PROTOCOL}://${BASE_URL}/api/redis/${XAccessToken}`;
 
-  const response = (await used.json()) as {
-    total_usage?: number;
-    error?: {
-      type: string;
-      message: string;
-    };
-  };
+  // request redis
+  try {
+    if (!XAccessToken.trim()) {
+      return new Response(errorInfo);
+    }
 
-  const total = (await subs.json()) as {
-    hard_limit_usd?: number;
-  };
+    const redisResult = await fetch(redisHttpUrl);
+    const { code, data } = await redisResult.json();
 
-  if (response.error && response.error.type) {
-    showToast(response.error.message);
-    return;
+    if (code === 0 || Number(data) <= 0) {
+      return new Response(errorInfo);
+    } else {
+      return NextResponse.json({
+        code: 1,
+        data,
+      });
+    }
+  } catch (error) {
+    return new Response(errorInfo);
   }
-
-  if (response.total_usage) {
-    response.total_usage = Math.round(response.total_usage) / 100;
-  }
-
-  return {
-    used: response.total_usage,
-    subscription: total.hard_limit_usd,
-  };
 }
 
 export async function requestChatStream(

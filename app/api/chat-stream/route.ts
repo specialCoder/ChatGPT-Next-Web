@@ -2,6 +2,10 @@ import { createParser } from "eventsource-parser";
 import { NextRequest } from "next/server";
 import { requestOpenai } from "../common";
 
+const DEFAULT_PROTOCOL = "https";
+const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
+const BASE_URL = process.env.BASE_URL ?? "aigcfree.vercel.app";
+
 async function createStream(req: NextRequest) {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
@@ -48,8 +52,33 @@ async function createStream(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const errorInfo = JSON.stringify({
+    code: 0,
+    message: "no available key!",
+  });
+
+  const token = req.headers.get("x-access-token") || "";
+  const redisHttpUrl = `${PROTOCOL}://${BASE_URL}/api/redis/${token}`;
+
+  // request redis
+  try {
+    if (!token.trim()) {
+      return new Response(errorInfo);
+    }
+
+    const redisResult = await fetch(redisHttpUrl);
+    const { code, data } = await redisResult.json();
+    if (code === 0 || Number(data) > 0) {
+      return new Response(errorInfo);
+    }
+  } catch (error) {
+    return new Response(errorInfo);
+  }
+
+  // request openai
   try {
     const stream = await createStream(req);
+    // TODO:redis data--
     return new Response(stream);
   } catch (error) {
     console.error("[Chat Stream]", error);

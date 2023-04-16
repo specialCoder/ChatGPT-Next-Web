@@ -2,7 +2,7 @@
 
 const nextConfig = {
   experimental: {
-    appDir: true,
+    appDir: true, // 开启 app 模式
   },
   webpack(config) {
     config.module.rules.push({

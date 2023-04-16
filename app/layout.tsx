@@ -16,6 +16,7 @@ try {
   console.error("No git or not from git repo.");
 }
 
+// SEO
 export const metadata = {
   title: "Awesome ChatGPT",
   description: "Your personal ChatGPT Chat Bot.",

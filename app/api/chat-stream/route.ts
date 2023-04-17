@@ -5,7 +5,7 @@ import { requestOpenai } from "../common";
 
 const DEFAULT_PROTOCOL = "https";
 const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
-const BASE_URL = process.env.BASE_URL ?? "aigcfree.vercel.app";
+const BASE_URL = process.env.BASE_URL ?? "ai.eatmango.cn";
 
 async function createStream(req: NextRequest) {
   const encoder = new TextEncoder();

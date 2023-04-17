@@ -8,7 +8,7 @@ const TIME_OUT_MS = 30000;
 const DEFAULT_PROTOCOL = "https";
 // const DEFAULT_PROTOCOL = "http";
 const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
-const BASE_URL = process.env.BASE_URL ?? "aigcfree.vercel.app";
+const BASE_URL = process.env.BASE_URL ?? "ai.eatmango.cn";
 // const BASE_URL = "127.0.0.1:3000";
 
 const makeRequestParam = (

@@ -128,7 +128,7 @@ export function Settings(props: { closeSettings: () => void }) {
   const builtinCount = SearchService.count.builtin;
   const customCount = promptStore.prompts.size ?? 0;
 
-  const showUsage = !!accessStore.token || !!accessStore.accessCode;
+  const showUsage = !!accessStore.XAccessToken  || !!accessStore.token || !!accessStore.accessCode;
 
   useEffect(() => {
     checkUpdate();
